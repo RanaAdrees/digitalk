@@ -47,7 +47,8 @@ const createContract=async()=>{
 export const DigiTalkProvider=({children})=>{
 
     const [formData, setformData] = useState({
-        description: ""
+        description: "",
+        buffer:""
     });
 
     const [postsArr, setpostsArr] = useState([]);
@@ -110,14 +111,16 @@ export const DigiTalkProvider=({children})=>{
                     digitalkContract=digitalkContract["digitalkContract"];
 
                     const PostsCount=await digitalkContract.getPostsCount();
+
+                    console.log("Post count:",PostsCount.toNumber());
                     
                     window.localStorage.setItem("postCount",PostsCount);
 
                     
         
-                    setpostCount(PostsCount.toNumber())
+                    setpostCount(PostsCount)
 
-                    console.log("first call:"+postCount)
+                    console.log("first call:"+PostsCount)
             }
             
         }
@@ -175,7 +178,7 @@ export const DigiTalkProvider=({children})=>{
 
     // creating new post
 
-    const createNewPost=async()=>{
+    const createNewPost=async(hash,file_name)=>{
 
         try{
             if(ethereum)
@@ -183,14 +186,13 @@ export const DigiTalkProvider=({children})=>{
 
                 const {description} = formData;
                 
-    
-               const  digitalkContractWithSigner = await CreatAndConnectSigner();
+                const  digitalkContractWithSigner = await CreatAndConnectSigner();
     
                 console.log(`Description: ${description}`)
                 
                 //call createPost method of contract and get transaction hash
     
-                const transHash= await digitalkContractWithSigner.createPost(description);
+                const transHash= await digitalkContractWithSigner.createPost(description,hash,file_name);
         
                 console.log(transHash);
         
@@ -238,26 +240,34 @@ export const DigiTalkProvider=({children})=>{
                 // create contract instance
                 const  digitalkContractWithSigner = await CreatAndConnectSigner();
 
-            //    let  digitalkContract = createContract();
-                
-            //    digitalkContract =digitalkContract['digitalkContract'] ;
-    
-               // get posts array by calling getAllPosts method of contract
+                //    let  digitalkContract = createContract();
+                    
+                //    digitalkContract =digitalkContract['digitalkContract'] ;
+        
+                // get posts array by calling getAllPosts method of contract
               
     
                const getPostsArr=await digitalkContractWithSigner.getAllPosts();
+               
+                console.log("Get post Arr",getPostsArr)
+               if(getPostsArr.length>=1)
+               {
+
+                   const structureArr=getPostsArr.map((post)=>({
+                       id:post.id,
+                       description:post.description,
+                       hash:post.hash,
+                       fileName:post.fileName,
+                       auther:post.auther
+        
+                   }))
+        
+                   setpostsArr(structureArr);
+        
+                   console.log(structureArr);
+                   setisLoading(false)
+               }
     
-               const structureArr=getPostsArr.map((post)=>({
-                   id:post.id,
-                   description:post.description,
-                   auther:post.auther
-    
-               }))
-    
-               setpostsArr(structureArr);
-    
-               console.log(structureArr);
-               setisLoading(false)
             
             }
             else{
@@ -272,6 +282,45 @@ export const DigiTalkProvider=({children})=>{
 
             alert("Please install metamask first!! No etherum object fetchAllPosts");
 
+        }
+
+    }
+
+    const tipOwner=async(id)=>{
+        try{
+            if(ethereum)
+            {
+               const  digitalkContractWithSigner = await CreatAndConnectSigner();
+    
+                console.log(`Description: ${description}`)
+                
+                //call createPost method of contract and get transaction hash
+    
+                const transHash= await digitalkContractWithSigner.tipOwner(id);
+        
+                console.log(transHash);
+        
+                setisLoading(true)
+        
+                console.log(`Loading - ${transHash.hash}`);
+        
+                await transHash.wait();
+        
+                setisLoading(false)
+        
+                console.log(`Success - ${transHash.hash}`);
+    
+                // call getPostsCount method of contract and get posts count
+
+                window.location.reload();
+            }
+            else{
+                console.log("No object found")
+            }
+        }
+        catch(err){
+            console.log(err);
+           
         }
 
     }
@@ -293,6 +342,7 @@ export const DigiTalkProvider=({children})=>{
         checkIfEthereumExists,
         connectWallet,
         createNewPost,
+        tipOwner,
         fetchAllPosts}}>
             {children}
         </DigiTalkContext.Provider>

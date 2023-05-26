@@ -5,6 +5,7 @@ import PostItem from './PostItem';
 
 const Posts = () => {
   const { postsArr, postCount,isLoading } = useContext(DigiTalkContext);
+  
   return (
     <>
       {postCount > 0 ?

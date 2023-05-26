@@ -1,11 +1,69 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 import { DigiTalkContext } from '../context/DigitalkContext';
 import Identicon from 'identicon.js';
 import { AccountSlice } from '../utils/AccountSlice';
+import { create as ipfsHttpClient } from "ipfs-http-client";
+import { BASE_URL } from "../utils/config";
+
 import Loader from './Loader'
+
 const Compose = () => {
 
-  const { connectedAccounts, formData, setformData,isLoading,createNewPost } = useContext(DigiTalkContext);
+  const [values, setvalues] = useState({
+    PROJECTID:"",
+    PROJECTSECRET:""
+
+  })
+
+  // useEffect(async() => {
+  //   try {
+  //     const res = await fetch(`${BASE_URL}/auth/config`, {
+  //       method: "get",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       },
+  //     });
+
+  //     const result = await res.json();
+
+  //     if(res.ok)
+  //     {
+  //       setvalues({
+  //         PROJECTID:result.PROJECTID,
+  //         PROJECTSECRET:result.PROJECTSECRET
+  //       })
+  //     }
+  //   } catch (err) {
+  //     alert(err.message);
+  //   }
+  
+  // }, [])
+  
+
+  const [fileName, setfileName] = useState("")
+
+  const { connectedAccounts, formData, setformData, isLoading, createNewPost } = useContext(DigiTalkContext);
+
+  // const projectId = "2LRiHmzyN5npk3eismPkUzXQjB6";
+  // const projectSecret = "7f1cba54c2a43dbfea5b1ddebccaa31b";
+  const authorization = "Basic " + btoa("2LRiHmzyN5npk3eismPkUzXQjB6"+ ":" + "7f1cba54c2a43dbfea5b1ddebccaa31b");
+
+
+  
+
+
+  // const ipfsNode = ipfs({
+  //   host: 'ipfs.infura.io',
+  //   port: 5001,
+  //   protocol: 'https'
+  // });
+
+  const ipfs = ipfsHttpClient({
+    url: "https://ipfs.infura.io:5001/api/v0",
+    headers:{
+      authorization
+    }
+  })
 
   let options = {
     foreground: [162, 25, 255, 255],               // rgba black
@@ -14,12 +72,38 @@ const Compose = () => {
 
   };
 
-  const handleSubmit = async(e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-     createNewPost();
-    
+    const result = await ipfs.add(formData["buffer"]);
 
+    console.log("result is:",result);
+    console.log("result is:",result.path);
+
+    // createNewPost();
+    createNewPost(result.path,fileName);
+
+
+  }
+
+  const captureFile = async (e) => {
+    e.preventDefault();
+    const nameAtt = e.target.name;
+
+    const file = e.target.files[0]
+    const reader = new window.FileReader()
+
+    reader.readAsArrayBuffer(file);
+    
+    setfileName(file.name);
+
+    reader.onloadend = () => {
+
+      setformData((prevState) => ({ ...prevState, [nameAtt]: reader.result }));
+      console.log("Reader result:", reader.result)
+      console.log("formData:", formData)
+      // save in state
+    }
   }
 
   const handleChange = (e) => {
@@ -46,8 +130,8 @@ const Compose = () => {
 
       </div>
       <h2>Write a post</h2>
-      <form onSubmit={(e)=>handleSubmit(e)} className="mt-2" >
-        <input type='file' accept=".jpg, .jpeg, .png, .pdf, .doc" />
+      <form onSubmit={(e) => handleSubmit(e)} className="mt-2" >
+        <input type='file' accept=".jpg, .jpeg, .png, .pdf, .doc" name='buffer' onChange={(e) => captureFile(e)} required />
         <div className="form-group mr-sm-2">
           <br></br>
           <input
@@ -60,8 +144,8 @@ const Compose = () => {
             required />
         </div>
         <button type="submit" className="btn btn-primary btn-sm mt-3">Upload!</button>
-        {isLoading?
-          <Loader/>
+        {isLoading ?
+          <Loader />
           :
           <></>
 
