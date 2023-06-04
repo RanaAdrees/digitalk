@@ -35,7 +35,9 @@ const otpVerification = () => {
   const handleChange = (e) => {
     console.log("On change---------")
     const email=localStorage.getItem("email")
+    
     console.log(e.target.value)
+
     setCode({otp:e.target.value,email:email});
   };
   const handleClick = async (e) => {

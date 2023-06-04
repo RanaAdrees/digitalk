@@ -45,6 +45,8 @@ const login = () => {
       if(res.ok)
       {
 
+        localStorage.setItem("user",JSON.stringify(result.user))
+
         navigate("/");
       }
     } catch (err) {

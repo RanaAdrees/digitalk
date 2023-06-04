@@ -1,8 +1,10 @@
 import React,{useState,useEffect} from 'react';
 
 import {contractAbi,deployedContractAddress} from '../utils/constants';
-
+import Cookie from "js-cookie"
+import { BASE_URL } from '../utils/config';
 import { ethers } from "ethers";
+import { AccountSlice } from '../utils/AccountSlice';
 
 export const DigiTalkContext=React.createContext();
 
@@ -44,6 +46,10 @@ const createContract=async()=>{
     };
 };
 
+
+
+
+
 export const DigiTalkProvider=({children})=>{
 
     const [formData, setformData] = useState({
@@ -52,13 +58,13 @@ export const DigiTalkProvider=({children})=>{
     });
 
     const [postsArr, setpostsArr] = useState([]);
-
     const [connectedAccounts, setconnectedAccounts] = useState("");
-
+    const [followersCount, setFollowersCount] = useState(0);
     const [isConnected, setisConnected] = useState(false)
     const [isLoading, setisLoading] = useState(false);
-
     const [postCount, setpostCount] = useState(localStorage.getItem("postCount"))
+    const [person, setPerson] = useState({});
+    const [friendList, setFriendList] = useState([]);
 
 
     const checkIfEthereumExists=async()=>{
@@ -145,6 +151,7 @@ export const DigiTalkProvider=({children})=>{
             // will help to connect to metamask
             const accounts = await ethereum.request({ method: "eth_requestAccounts", });
             console.log("Connected::::")
+            
             setconnectedAccounts(accounts[0]);
             setisConnected(true)
 
@@ -156,6 +163,35 @@ export const DigiTalkProvider=({children})=>{
             alert("Connect to metamask in order to continue");
         }
  
+    }
+    const updateuser=async(publicKey,id)=>{
+        // setId(Cookie.get("user").userId);
+
+        console.log("Inside context update------------")
+        console.log(publicKey)
+     
+          try{
+            const result=await fetch((`${BASE_URL}/users/${id}`),{
+              method:"PATCH",
+              headers:{
+                "content-type":"application/json"
+              },
+              body:JSON.stringify({publicKey:publicKey})
+             })
+             const res= await result.json();
+             if(result.status==200)
+             {
+              console.log("Success");
+              localStorage.setItem("key",publicKey)
+             }
+    
+          }
+          catch(err)
+          {
+            console.log(err)
+          }
+    
+          
     }
 
     const CreatAndConnectSigner=async()=>{
@@ -325,12 +361,86 @@ export const DigiTalkProvider=({children})=>{
 
     }
 
+
+
+
+    const fetchData=async(id)=>{
+        console.log("Id:"+id)
+        // id=JSON.stringify(id);
+        console.log("id is___>"+id)
+        try{
+
+            const response = await fetch(`${BASE_URL}/users/${id}`,{
+                method:"GET",
+                headers:{
+                    "content-type":"application/json",
+                }
+              });
+              const result = await response.json();
+              console.log("responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+              console.log(result)
+              console.log(result)
+              setPerson(result)
+        }
+        catch(err)
+        {
+            console.log(err)
+        }
+    
+    }
+
+
+    const fetchFriends=async(id)=>{
+        // id=JSON.stringify(id);
+        console.log("Inside Fetch friends--------------------->")
+      try {
+        const response = await fetch(`${BASE_URL}/users/friends/${id}`,{
+            method:"GET",
+            headers:{
+                "content-type":"application/json",
+            }
+        });
+        const result = await response.json();
+   
+        setFriendList(result);
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const fetchFriendsCount=async(id)=>{
+        console.log("Inside Fetch friends--------------------->")
+        // id=JSON.stringify(id);
+      try {
+        const res = await fetch(`${BASE_URL}/users/friendCount/${id}`,{
+            method:"GET",
+            headers:{
+              "content-type":"applicaion/json"
+            }
+          }); 
+          const result = await res.json();
+          if(res.status!=404)
+          {
+            setFollowersCount(result.count);
+          }
+         
+      } catch (error) {
+       console.log(err)
+      }
+    }
+
     useEffect(() => {
         checkIfEthereumExists();
         getPostsCount();
 
         
       }, [])
+
+      useEffect(() => {
+        const id =JSON.parse(localStorage.getItem("user")).id
+        updateuser(connectedAccounts,id)
+        fetchData(id)
+      }, [connectedAccounts])
+      
 
     return(
         <DigiTalkContext.Provider value={{formData
@@ -343,7 +453,14 @@ export const DigiTalkProvider=({children})=>{
         connectWallet,
         createNewPost,
         tipOwner,
-        fetchAllPosts}}>
+        fetchAllPosts,
+        updateuser,
+        fetchData,
+        fetchFriends,
+        person,
+        friendList,
+        fetchFriendsCount,
+        followersCount}}>
             {children}
         </DigiTalkContext.Provider>
     );

@@ -20,6 +20,7 @@ const signup = () => {
 
   const handleClick = async (e) => {
     e.preventDefault();
+    console.log("Reigteroiiiiiiiiiiiiiiiii")
 
     try {
       const res = await fetch(`${BASE_URL}/auth/register`, {
@@ -33,8 +34,10 @@ const signup = () => {
       const result = await res.json();
       if(result.status==="OK")
       {
+        console.log("Inside ok")
         const URL=result.redirectUrl;
         console.log(URL)
+        
         localStorage.setItem("email",credentials.email);
         
         navigate(URL)

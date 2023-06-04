@@ -137,7 +137,13 @@ export const login = async (req, res) => {
         // // Set a cookie
         // cookies.set("userEmail", email, { httpOnly: true });
         res.cookie("userEmail", email);
-        res.json({ message: "User Signin Successfully" });
+        res.json({
+          message: "User Signin Successfully",
+          user: {
+            id: userLogin._id,
+            email,
+          },
+        });
       }
     } else {
       res.json({

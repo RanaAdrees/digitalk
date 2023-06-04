@@ -1,5 +1,19 @@
 import express from "express";
-import { createNewUser, getSingleUser } from "../controllers/userController.js";
+import {
+  createNewUser,
+  getSingleUser,
+  getAllUsers,
+  searchUsers,
+  getUserFriends,
+  // getUserById,
+  sendFriendRequest,
+  cancelFriendRequest,
+  acceptFriendRequest,
+  denyFriendRequest,
+  getFriendRequests,
+  getFriendCount,
+  updateUser,
+} from "../controllers/userController.js";
 const router = express.Router();
 
 // import { verifyUser } from "../utlis/verifyToken.js";
@@ -10,13 +24,42 @@ const router = express.Router();
 // //delete user
 // router.delete("/:id", verifyUser, deleteUser);
 
-// //get single user
-// router.get("/:id", verifyUser, getSingleUser);
+//get single user
+router.get("/:id", getSingleUser);
 
 // //get all users
 // router.get("/", verifyUser, getAllUser);
 
 router.post("/", createNewUser);
 // router.get("/:email", getSingleUser);
+// Route for searching Users by name or publicKey
+router.get("/search", searchUsers);
+
+// Get all friends of a User by publicKey
+router.get("/friends/:userId", getUserFriends);
+
+// Get a User by publicKey
+// router.get("/:userId", getUserById);
+
+// Update user through email
+router.patch("/:id", updateUser);
+
+// Send a friend request
+router.post("/sendFriendRequest", sendFriendRequest);
+
+// Cancel a friend request
+router.post("/cancelFriendRequest", cancelFriendRequest);
+
+// Accept a friend request
+router.post("/acceptFriendRequest", acceptFriendRequest);
+
+// Deny a friend request
+router.post("/denyFriendRequest", denyFriendRequest);
+
+// Route for fetching friend requests for a specific user
+router.get("/friendRequests/:userId", getFriendRequests);
+
+// Get the count of friends for a specific user
+router.get("/friendCount/:userId", getFriendCount);
 
 export default router;

@@ -9,6 +9,15 @@ const UserSchema = new Schema({
   dateOfBirth: Date,
   verified: Boolean,
   token: String,
+  publicKey: {
+    type: String,
+    required: true,
+    default: "NULL",
+    unique: true,
+    trim: true,
+  },
+  friends: [{ type: mongoose.Types.ObjectId }],
+  friendRequests: [{ type: mongoose.Types.ObjectId }],
 });
 
 // generating Token

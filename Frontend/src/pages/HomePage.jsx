@@ -1,18 +1,51 @@
 import React, { useContext,useState,useEffect } from 'react'
 import { DigiTalkContext } from '../context/DigitalkContext';
 import { useNavigate } from "react-router-dom";
-import Posts from '../components/Posts';
-import ComposePost from '../components/Compose';
-import logo from "../../public/Images/logo.png";
+import HomeFeed from './HomeFeed';
+import { BASE_URL } from "../utils/config";
+import ConnectPage from './ConnectPage';
+
 import Cookie from "js-cookie"
 const Home = () => {
   const { connectedAccounts,connectWallet } = useContext(DigiTalkContext);
   const navigate = useNavigate();
+
+  // const getSingleUser=async()=>{
+  //   const id=JSON.parse
+  //   const email=localStorage.getItem("email")
+  //   try {
+  //     const res = await fetch(`${BASE_URL}/users/${email}`, {
+  //       method: "GET",
+  //       headers: {
+  //         "content-type": "application/json",
+  //       }
+  //     });
+
+  //     const result = await res.json();
+  //     if(result)
+  //     {
+  //       console.log(result)
+  //     }
+  //     const user={
+  //       UserId:result._id,
+  //       email:result.email,
+  //     }
+  //     Cookie.set("User",user)
+  //   } catch (err) {
+  //     console.log(err)
+  //   }
+
+  // }
   useEffect(() => {
 
     if(!localStorage.getItem("email"))
     {
       navigate("/login")
+    }
+    else
+    {
+      Cookie.set("user",JSON.parse(localStorage.getItem("user")))
+     
     }
   }, [])
   return (
@@ -20,19 +53,11 @@ const Home = () => {
     <div>
       {connectedAccounts ?
         <>
-          <ComposePost />
-          <Posts />
+          <HomeFeed/>
         </> :
-        <div className='container text-center d-flex flex-column justify-content-center' style={{height:"90vh", display:"flex",flexDirection:"column",alignItems:"center",justifyContent:"center"}} >
-           <img className="mb-4" src={logo} alt="" width="250" height="100"/>
-          <h1>
-            Connect to the wallet in order to continue👀
-          </h1>
-          <button type='button' className='btn btn-primary mt-3 ' onClick={connectWallet} style={{width:"200px",textAlign:"center"}}>
-              Connect to Wallet
-            </button>
-
-        </div>
+        <>
+          <ConnectPage/>
+        </>
 
       }
 
