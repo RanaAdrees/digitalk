@@ -33,7 +33,7 @@ router.get("/:id", getSingleUser);
 router.post("/", createNewUser);
 // router.get("/:email", getSingleUser);
 // Route for searching Users by name or publicKey
-router.get("/search", searchUsers);
+router.get("/search/:username/publickey/:publicKey", searchUsers);
 
 // Get all friends of a User by publicKey
 router.get("/friends/:userId", getUserFriends);
@@ -45,19 +45,19 @@ router.get("/friends/:userId", getUserFriends);
 router.patch("/:id", updateUser);
 
 // Send a friend request
-router.post("/sendFriendRequest", sendFriendRequest);
+router.post("/notification/sendFriendRequest", sendFriendRequest);
 
 // Cancel a friend request
-router.post("/cancelFriendRequest", cancelFriendRequest);
+router.post("/notification/cancelFriendRequest", cancelFriendRequest);
 
 // Accept a friend request
-router.post("/acceptFriendRequest", acceptFriendRequest);
+router.post("/notification/acceptFriendRequest", acceptFriendRequest);
 
 // Deny a friend request
-router.post("/denyFriendRequest", denyFriendRequest);
+router.post("/notification/denyFriendRequest", denyFriendRequest);
 
 // Route for fetching friend requests for a specific user
-router.get("/friendRequests/:userId", getFriendRequests);
+router.get("/notification/friendRequests/:userId", getFriendRequests);
 
 // Get the count of friends for a specific user
 router.get("/friendCount/:userId", getFriendCount);

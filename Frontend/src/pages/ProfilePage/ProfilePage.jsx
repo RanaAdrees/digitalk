@@ -2,6 +2,7 @@ import React, { useState, useEffect,useContext } from "react";
 // import axios from 'axios';
 // import Post from "../Posts/Post";
 // import NewPost from "../Posts/NewPost";
+import HomeFeed from "../HomeFeed"
 import Profile from "../Profile/Profile";
 import Quicks from "../Quicks/Quicks";
 import Search from "../Search/Search";
@@ -109,6 +110,7 @@ function ProfilePage() {
               commentCount={0}
               starCount={0}
             /> */}
+            <HomeFeed/>
           </div>
         </div>
 

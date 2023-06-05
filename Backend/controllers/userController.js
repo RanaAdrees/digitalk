@@ -53,25 +53,24 @@ export const createNewUser = async (data) => {
 export const getSingleUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("Inside Find single-----");
-    // Checking if user exists already
-    if (id.match(/^[0-9a-fA-F]{24}$/)) {
-      // Yes, it's a valid ObjectId, proceed with `findById` call.
-      const foundUser = await User.findById(id);
+    console.log("Inside Find single-----", id);
+    //Checking if user exists already
+    // if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    //Yes, it's a valid ObjectId, proceed with `findById` call.
 
-      if (!foundUser) {
-        // User does not exist
-        throw new Error("User with this email does not exist!");
-      } else {
-        console.log("Response------------------->");
-        console.log(foundUser);
-        res.status(200).json(foundUser);
-      }
+    const foundUser = await User.findById(id);
+
+    if (foundUser) {
+      console.log("Response------------------->");
+      console.log(foundUser);
+      res.json(foundUser);
     }
   } catch (err) {
     console.log(err);
     throw new Error("An error occurred while retrieving the user.");
   }
+  res.end();
+  // if (id.match(/^[0-9a-fA-F]{24}$/)) {
 
   // User.findById(id)
   //   .then((user) => {
@@ -80,10 +79,14 @@ export const getSingleUser = async (req, res) => {
   //       console.log(user);
   //       res.json(user);
   //     } else {
-  //       res.status(404).json({ message: "Person not found" });
+  //       res.status(404).json({ message: "User not found" });
   //     }
   //   })
-  //   .catch((err) => res.status(400).json("Error: " + err));
+  //   .catch((err) => {
+  //     console.log(err);
+  //     res.status(400).json("Error: " + err);
+  //   });
+  // }
 };
 
 export const getAllUsers = (req, res) => {
@@ -97,22 +100,24 @@ export const searchUsers = async (req, res) => {
   console.log(
     "Inside Search user---------------------------------------------------"
   );
-  const { username, publicKey } = req.query;
-  console.log(req.query);
-
   try {
+    const { username, publicKey } = req.params;
+    // const { username, publicKey } = req.query;
+    console.log(req.params);
+    // console.log(req.query);
     let results = [];
-    username = username.toString();
-    publicKey = publicKey.toString();
+    // username = username;
+    // publicKey = publicKey;
     if (username || publicKey) {
-      results = await Person.find({
+      results = await User.find({
         $or: [
-          { username: { $regex: `^${username}`, $options: "i" } },
+          { username: { $regex: `${username}`, $options: "i" } },
           { publicKey },
         ],
       });
     } else {
-      return res.status(400).json({ message: "Invalid search parameters" });
+      res.end();
+      // return res.status(400).json({ message: "Invalid search parameters" });
     }
 
     res.json(results);
@@ -218,28 +223,29 @@ export const cancelFriendRequest = async (req, res) => {
   try {
     const { _id, UserId } = req.body;
 
-    const User = await User.findById(_id);
+    const UserRes = await User.findById(_id);
 
-    if (User.friendRequests.includes(UserId)) {
-      User.friendRequests = User.friendRequests.filter((p) => {
-        return p.toString() !== UserId.toString();
+    if (UserRes.friendRequests.includes(UserId)) {
+      UserRes.friendRequests = UserRes.friendRequests.filter((p) => {
+        return p.toString() !== UserRes.toString();
       });
-      await User.save();
-      res.json(User);
+      await UserRes.save();
+      res.json(UserRes);
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
   }
+  res.end();
 };
 
 // Accept a friend request from friendId to userId
 
 export const acceptFriendRequest = async (req, res) => {
   try {
-    const { userId, friendId } = req.body;
+    const { id, friendId } = req.body;
 
-    const currentUser = await User.findById(userId);
+    const currentUser = await User.findById(id);
     const friendUser = await User.findById(friendId);
 
     if (currentUser && friendUser) {
@@ -250,9 +256,9 @@ export const acceptFriendRequest = async (req, res) => {
       await currentUser.save();
 
       friendUser.friendRequests = friendUser.friendRequests.filter(
-        (id) => id.toString() !== userId.toString()
+        (id) => id.toString() !== id.toString()
       );
-      friendUser.friends.push(userId);
+      friendUser.friends.push(id);
       await friendUser.save();
 
       res.json({ status: 200 });
@@ -265,32 +271,36 @@ export const acceptFriendRequest = async (req, res) => {
 
 // Deny a friend request from friendId to currentPublicKey
 export const denyFriendRequest = async (req, res) => {
+  console.log("Denyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
   try {
     const { userId, friendId } = req.body;
 
-    const User = await User.findById(userId);
+    const UserRes = await User.findById(userId);
 
-    if (User.friendRequests.includes(friendId)) {
-      User.friendRequests = User.friendRequests.filter((p) => {
-        return p.toString() !== friendId;
+    // console.log(UserRes);
+    if (UserRes.friendRequests.includes(friendId)) {
+      UserRes.friendRequests = UserRes.friendRequests.filter((p) => {
+        return p.toString() !== friendId.toString();
       });
-      await User.save();
-      res.json(User);
+      console.log(UserRes);
+      await UserRes.save();
+      res.json(UserRes);
     }
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error" });
+    // res.status(500).json({ message: "Server error" });
   }
+  res.end();
 };
 
 // Get friend requests for a specific user
 export const getFriendRequests = async (req, res) => {
   try {
     const { userId } = req.params;
-    const User = await User.findById(userId);
+    const UserRes = await User.findById(userId);
 
-    if (User) {
-      const friendRequests = User.friendRequests;
+    if (UserRes) {
+      const friendRequests = UserRes.friendRequests;
       const friends = await User.find({
         _id: {
           $in: friendRequests,

@@ -11,7 +11,7 @@ const UserSchema = new Schema({
   token: String,
   publicKey: {
     type: String,
-    required: true,
+    // required: true,
     default: "NULL",
     unique: true,
     trim: true,

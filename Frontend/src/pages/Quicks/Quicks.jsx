@@ -16,7 +16,7 @@ export default function Quicks(props) {
       <div className="collapse" id={props.title}>
         <ul className="list-unstyled quicks-options">
           {Array.isArray(props.list) ? (
-            props.list.map((item, index) => <li className="list-item" key={index}>{item.name}</li>)
+            props.list.map((item, index) => <li className="list-item" key={index}>{item.username}</li>)
           ) : (
             <li className="list-item">No items found</li>
           )}

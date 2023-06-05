@@ -23,17 +23,21 @@ function Search({ onPersonClick }) {
   const handleSearch = async (query) => {
     setid(JSON.parse(localStorage.getItem("user")).id)
     console.log("Id is iiiiiiiiiiiiiiiii:"+id);
+    console.log("keyyyyyyyyyyyyyyyyyyyyy:",query)
+    console.log("typeeeee",typeof(query))
     if (!query) {
       setResults([]);
       return;
     }
     try {
+      console.log("itself---------")
       const result = await axios.get(`${BASE_URL}/users/${id}`);
       const itself = result.data;
       console.log("itself---------")
       console.log(itself)
+      // console.log(`${BASE_URL}/users/search/${query}/publickey/${query}`)
 
-      const res = await axios.get(`${BASE_URL}/users/search?username=${query}&publicKey=${query}`);
+      const res = await axios.get(`${BASE_URL}/users/search/${query}/publickey/${query}`);
       console.log(res)
       console.log(res.data)
       res.data = res.data.filter(item => {
@@ -42,7 +46,7 @@ function Search({ onPersonClick }) {
 
       const updatedResults = res.data.map((person) => {
         const isFriend = itself.friends.includes(person._id);
-        const hasFriendRequest = itself.friendRequests.includes(person._id);
+        const hasFriendRequest = person.friendRequests.includes(itself._id);
         return {
           ...person,
           isFriend,
@@ -71,10 +75,10 @@ function Search({ onPersonClick }) {
     try {
       console.log(hasFriendRequest)
       if (!hasFriendRequest) {
-        const newresult = await axios.post(`${BASE_URL}/users/sendFriendRequest`,
+        const newresult = await axios.post(`${BASE_URL}/users/notification/sendFriendRequest`,
           {
             _id: id,
-            personId,
+            UserId:personId,
           })
         if (newresult.data) {
           window.alert("Request sent successfully...");
@@ -86,10 +90,10 @@ function Search({ onPersonClick }) {
         }
       }
       else {
-        const list = await axios.post(`${BASE_URL}/users/cancelFriendRequest`,
+        const list = await axios.post(`${BASE_URL}/users/notification/cancelFriendRequest`,
           {
             _id: id,
-            personId,
+            UserId:personId,
           })
         if (list) {
           window.alert("You cancelled request!");
@@ -120,7 +124,7 @@ function Search({ onPersonClick }) {
           {results.map((person, index) => (
             <li key={index} className="w-100 search-result d-flex justify-content-between">
               <div>
-                <button className='btn btn-primary' onClick={() => onPersonClick(person._id)}>{person.name}</button>
+                <button className='btn btn-primary' onClick={() => onPersonClick(person._id)}>{person.username}</button>
               </div>
               <div>
                 {
