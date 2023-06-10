@@ -9,11 +9,11 @@ function App() {
   //const { checkIfEthereumExists } = useContext(DigiTalkContext); 
   
   const { connectedAccounts,connectWallet } = useContext(DigiTalkContext);
-  const email=localStorage.getItem("email")
+  const user=localStorage.getItem("user")
   return (
     <div>
       {
-        connectedAccounts&&email?<Navbar /> : <></>
+        connectedAccounts&&user?<Navbar /> : <></>
       }
       <Routers/>
       {/* <Footer /> */}

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCopy } from '@fortawesome/free-solid-svg-icons';
 import './Profile.css';
 // import axios from 'axios';
+import { ethers } from 'ethers';
 import { BASE_URL } from '../../utils/config';
 import profilePhoto from "/public/Images/profile-img3.png";
 import { DigiTalkContext } from "../../context/DigitalkContext";
@@ -18,6 +19,8 @@ export default function Profile() {
   const count = 6;
 
   useEffect(() => {
+    if(localStorage.getItem("user"))
+    {
     console.log("Selected__________profile>"+selectedPerson)
     console.log()
     // const id=JSON.parse(localStorage.getItem("user")).id;
@@ -26,7 +29,7 @@ export default function Profile() {
     console.log("Loggedin use profile"+loggedInUser)
     setSelectedPerson(JSON.parse(localStorage.getItem("user")).id)
     console.log("selected use profile"+selectedPerson)
-
+    }
 
     if(loggedInUser&& selectedPerson)
     {
@@ -136,7 +139,7 @@ export default function Profile() {
               <strong>Posts:</strong> {person.postCount ? person.Count : "0"}
             </li>
             <li className="list-group-item">
-              <strong>Earned:</strong> {person.money ? person.Money : "0"}
+              <strong>Earned:</strong> {person.money ? ethers.utils.formatEther(person.tipAmount.toString()) : "0"}
             </li>
             <li className="list-group-item">
               <strong>Followers:</strong> {followersCount ? followersCount : "0"}

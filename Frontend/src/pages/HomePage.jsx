@@ -38,7 +38,7 @@ const Home = () => {
   // }
   useEffect(() => {
 
-    if(!localStorage.getItem("email"))
+    if(!localStorage.getItem("user"))
     {
       navigate("/login")
     }
@@ -53,7 +53,8 @@ const Home = () => {
     <div>
       {connectedAccounts ?
         <>
-          <HomeFeed/>
+          <HomeFeed status="home"/>
+          {/* <HomeFeed/> */}
         </> :
         <>
           <ConnectPage/>

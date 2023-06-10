@@ -108,6 +108,7 @@ const PostItem = ({ post }) => {
               {
                 post.tipAmount?
                 ethers.utils.formatEther(post.tipAmount.toString()): ""
+                // post.tipAmount
               }
               ETH      
             </small>
@@ -115,11 +116,12 @@ const PostItem = ({ post }) => {
               className="btn btn-sm float-right pt-0 btn-primary"
               name={post.id}
               onClick={ (event) => {
-                tipOwner(post.id);
+                // tipOwner(post.id,post.auther);
+                tipOwner(post.id,post.auther);
               }}
               
             >
-              TIP 0.1 ETH
+              TIP 0.0001 ETH
             </button>
         </div>
 

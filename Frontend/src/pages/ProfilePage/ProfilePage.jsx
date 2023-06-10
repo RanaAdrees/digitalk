@@ -6,14 +6,17 @@ import HomeFeed from "../HomeFeed"
 import Profile from "../Profile/Profile";
 import Quicks from "../Quicks/Quicks";
 import Search from "../Search/Search";
+
 import { BASE_URL } from "../../utils/config";
 import "./ProfilePage.css";
 import profilePhoto from "/public/Images/profile-img3.png";
 import postPhoto1 from "/public/Images/post-img2.png";
 import { DigiTalkContext } from "../../context/DigitalkContext";
+import ConnectPage from "../ConnectPage";
 
 function ProfilePage() {
-  const {person,friendList,fetchFriends,fetchData} =useContext(DigiTalkContext)
+  const {person,friendList,fetchFriends,fetchData,fetchPostyAddess,connectedAccounts} =useContext(DigiTalkContext)
+  
   const [isHovering, setIsHovering] = useState(false);
   // const [person, setPerson] = useState({});
   // const [friendList, setFriendList] = useState([]);
@@ -26,7 +29,9 @@ function ProfilePage() {
 
 
   useEffect(() => {
-    console.log("Selected__________>"+selectedPerson)
+    if(localStorage.getItem("user"))
+    {
+      console.log("Selected__________>"+selectedPerson)
     console.log()
     // const id=JSON.parse(localStorage.getItem("user")).id;
     
@@ -34,6 +39,8 @@ function ProfilePage() {
     console.log("Loggedin use"+loggedInUser)
     setSelectedPerson(JSON.parse(localStorage.getItem("user")).id)
     console.log("selected use"+selectedPerson)
+    }
+    
 
   }, [1])
 
@@ -59,6 +66,8 @@ function ProfilePage() {
 
     
   }, [selectedPerson]);
+
+  
 
   const handlePersonClick = async (personId) => {
     try {
@@ -110,7 +119,12 @@ function ProfilePage() {
               commentCount={0}
               starCount={0}
             /> */}
-            <HomeFeed/>
+             
+            {connectedAccounts?<HomeFeed status="profile"/>: <>
+          ""
+        </>
+}
+            
           </div>
         </div>
 

@@ -1,14 +1,34 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState,useEffect } from 'react'
 import { DigiTalkContext } from '../context/DigitalkContext';
 import Loader from './Loader';
 import PostItem from './PostItem';
 
-const Posts = () => {
-  const { postsArr, postCount,isLoading } = useContext(DigiTalkContext);
+const Posts = ({Arr,count}) => {
+  const {isLoading} = useContext(DigiTalkContext);
+
+  // const [count, setcount] = useState(0)
+  // const [Arr, setArr] = useState([])
+  useEffect(() => {
+    console.log("Array receivers:")
+    // console.log(Arr)
+    // if(status==="self")
+    // {
+    //   setArr(selfpostsArr)
+    //   setcount(selfpostsArr.length);
+    // }
+    // else
+    // {
+    //   setArr(postsArr)
+    //   setcount(postsArr.length);
+    // }
+  
+  }, [])
+  
+
   
   return (
     <>
-      {postCount > 0 ?
+      {count > 0 ?
         <div className="container-fluid mt-5">
           <div className="row">
             {isLoading ?
@@ -16,7 +36,7 @@ const Posts = () => {
               :
               <div className='content mr-auto ml-auto posts_container'>
 
-                {postsArr.map((post, i) => {
+                {Arr.map((post, i) => {
                   return (
                     <PostItem post={post} key={i} />
                   )
