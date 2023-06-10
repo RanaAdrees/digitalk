@@ -112,7 +112,7 @@ export const DigiTalkProvider=({children})=>{
             console.log()
             if(ethereum )
             {
-                console.log("Inside getPostsCount ")
+                // console.log("Inside getPostsCount ")
                 
                     //const  digitalkContractWithSigner = await CreatAndConnectSigner();
                     let  digitalkContract = await createContract();
@@ -121,7 +121,7 @@ export const DigiTalkProvider=({children})=>{
 
                     const PostsCount=await digitalkContract.getPostsCount();
 
-                    console.log("Post count:",PostsCount.toNumber());
+                    // console.log("Post count:",PostsCount.toNumber());
                     
                     window.localStorage.setItem("postCount",PostsCount);
 
@@ -129,7 +129,7 @@ export const DigiTalkProvider=({children})=>{
         
                     setpostCount(PostsCount)
 
-                    console.log("first call:"+PostsCount)
+                    // console.log("first call:"+PostsCount)
             }
             
         }
@@ -145,7 +145,7 @@ export const DigiTalkProvider=({children})=>{
     const connectWallet=async()=>{
 
         try{
-            console.log("Clicked connectWallet")
+            // console.log("Clicked connectWallet")
             if(!ethereum){
 
                 return alert("Please install metamask first!! No etherum object");
@@ -167,6 +167,32 @@ export const DigiTalkProvider=({children})=>{
         }
  
     }
+
+    const disconnectWallet=async()=>{
+
+        // try{
+        //     console.log("Clicked connectWallet")
+        //     if(!ethereum){
+
+        //         return alert("Please install metamask first!! No etherum object");
+        //     }
+    
+        //     // will help to connect to metamask
+        //     const accounts = await ethereum.request({ method: "wallet_disconnect", });
+        //     console.log("Connected::::")
+            
+        //     setconnectedAccounts(accounts[0]);
+        //     setisConnected(true)
+
+        //     window.location.reload();
+
+        // }
+        // catch(err){
+        //     console.log(err);
+        //     alert("You haven't connected yet");
+        // }
+
+    }
     const updateuser=async(publicKey,id)=>{
         // setId(Cookie.get("user").userId);
 
@@ -179,7 +205,7 @@ export const DigiTalkProvider=({children})=>{
               headers:{
                 "content-type":"application/json"
               },
-              body:JSON.stringify({publicKey:publicKey})
+              body:JSON.stringify({publicKey})
              })
              const res= await result.json();
              if(result.status==200)
@@ -228,13 +254,13 @@ export const DigiTalkProvider=({children})=>{
                 
                 const  digitalkContractWithSigner = await CreatAndConnectSigner();
     
-                console.log(`Description: ${description}`)
+                // console.log(`Description: ${description}`)
                 
                 //call createPost method of contract and get transaction hash
     
                 const transHash= await digitalkContractWithSigner.createPost(description,"public",hash,file_name);
         
-                console.log(transHash);
+                // console.log(transHash);
         
                 setisLoading(true)
         
@@ -250,7 +276,7 @@ export const DigiTalkProvider=({children})=>{
         
                 const PostsCount=await digitalkContractWithSigner.getPostsCount();
     
-                console.log(`Posts length: ${PostsCount}`)
+                // console.log(`Posts length: ${PostsCount}`)
         
                 setpostCount(PostsCount.toNumber());
 
@@ -272,10 +298,10 @@ export const DigiTalkProvider=({children})=>{
     const fetchAllPosts=async()=>{
 
         try{
-            console.log("Inside fetch outside:"+ connectedAccounts)
+            // console.log("Inside fetch outside:"+ connectedAccounts)
             if(ethereum)
             {
-                console.log("Inside FetchAll")
+                // console.log("Inside FetchAll")
                 
                 // create contract instance
                 const  digitalkContractWithSigner = await CreatAndConnectSigner();
@@ -289,7 +315,7 @@ export const DigiTalkProvider=({children})=>{
     
                const getPostsArr=await digitalkContractWithSigner.getAllPosts();
                
-                console.log("Get post Arr",getPostsArr)
+                // console.log("Get post Arr",getPostsArr)
                if(getPostsArr.length>=1)
                {
 
@@ -306,7 +332,7 @@ export const DigiTalkProvider=({children})=>{
         
                    setpostsArr(structureArr);
         
-                   console.log(structureArr);
+                //    console.log(structureArr);
                    setisLoading(false)
                }
     
@@ -336,7 +362,7 @@ export const DigiTalkProvider=({children})=>{
 
                const parsedAmount=ethers.utils.parseEther("0.0001")
     
-                console.log(`Description: ${description}`)
+                // console.log(`Description: ${description}`)
                 
                 //call createPost method of contract and get transaction hash
 
@@ -350,27 +376,27 @@ export const DigiTalkProvider=({children})=>{
                     }]
                 })
 
-                console.log("Amount transfer----------------->"+parsedAmount)
-                console.log("Amount transfer----------------->"+parsedAmount._hex)
+                // console.log("Amount transfer----------------->"+parsedAmount)
+                // console.log("Amount transfer----------------->"+parsedAmount._hex)
     
                 const transHash= await digitalkContractWithSigner.tipOwner(id-1,parsedAmount);
         
-                console.log(transHash);
+                // console.log(transHash);
         
                 setisLoading(true)
         
-                console.log(`Loading - ${transHash.hash}`);
+                console.log(`Loading Tip - ${transHash.hash}`);
         
                 await transHash.wait();
         
                 setisLoading(false)
         
-                console.log(`Success - ${transHash.hash}`);
+                console.log(`Success Tip - ${transHash.hash}`);
     
                 // call getPostsCount method of contract and get posts count
                 const getPostsArr=await digitalkContractWithSigner.getAllPosts();
                
-                console.log("Get post Arr again-------------",getPostsArr)
+                // console.log("Get post Arr again-------------",getPostsArr)
                if(getPostsArr.length>=1)
                {
 
@@ -387,7 +413,7 @@ export const DigiTalkProvider=({children})=>{
         
                    setpostsArr(structureArr);
         
-                   console.log(structureArr);
+                //    console.log(structureArr);
                    setisLoading(false)
                }
                 // window.location.reload();
@@ -408,10 +434,10 @@ export const DigiTalkProvider=({children})=>{
 
     const fetchPostyAddess=async()=>{
         try{
-            console.log("Inside fetch by address:"+ connectedAccounts)
+            // console.log("Inside fetch by address:"+ connectedAccounts)
             if(ethereum)
             {
-                console.log("Inside FetchAll")
+                // console.log("Inside FetchAll")
                 
                 // create contract instance
                 const  digitalkContractWithSigner = await CreatAndConnectSigner();
@@ -425,7 +451,7 @@ export const DigiTalkProvider=({children})=>{
     
                const getPostsArr=await digitalkContractWithSigner.getPostsByAddress(connectedAccounts);
                
-                console.log("Get post Array by address",getPostsArr)
+                // console.log("Get post Array by address",getPostsArr)
                if(getPostsArr.length>=1)
                {
 
@@ -449,7 +475,7 @@ export const DigiTalkProvider=({children})=>{
         
                    setselfpostsArr(filteredArr);
         
-                   console.log(structureArr);
+                //    console.log(structureArr);
                    setisLoading(false)
                }
     
@@ -475,9 +501,9 @@ export const DigiTalkProvider=({children})=>{
 
 
     const fetchData=async(id)=>{
-        console.log("Id:"+id)
+        // console.log("Id:"+id)
         // id=JSON.stringify(id);
-        console.log("id is___>"+id)
+        // console.log("id is___>"+id)
         try{
 
             const response = await fetch(`${BASE_URL}/users/${id}`,{
@@ -487,9 +513,9 @@ export const DigiTalkProvider=({children})=>{
                 }
               });
               const result = await response.json();
-              console.log("responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
-              console.log(result)
-              console.log(result)
+            //   console.log("responseeeeeeeeeeeeeeeeeeeeeeeeeeeeeee")
+            //   console.log(result)
+            //   console.log(result)
               setPerson(result)
         }
         catch(err)
@@ -502,7 +528,7 @@ export const DigiTalkProvider=({children})=>{
 
     const fetchFriends=async(id)=>{
         // id=JSON.stringify(id);
-        console.log("Inside Fetch friends--------------------->")
+        // console.log("Inside Fetch friends--------------------->")
       try {
         const response = await fetch(`${BASE_URL}/users/friends/${id}`,{
             method:"GET",
@@ -518,7 +544,7 @@ export const DigiTalkProvider=({children})=>{
       }
     }
     const fetchFriendsCount=async(id)=>{
-        console.log("Inside Fetch friends--------------------->")
+        // console.log("Inside Fetch friends--------------------->")
         // id=JSON.stringify(id);
       try {
         const res = await fetch(`${BASE_URL}/users/friendCount/${id}`,{

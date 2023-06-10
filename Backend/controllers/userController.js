@@ -53,7 +53,7 @@ export const createNewUser = async (data) => {
 export const getSingleUser = async (req, res) => {
   try {
     const { id } = req.params;
-    console.log("Inside Find single-----", id);
+    // console.log("Inside Find single-----", id);
     //Checking if user exists already
     // if (id.match(/^[0-9a-fA-F]{24}$/)) {
     //Yes, it's a valid ObjectId, proceed with `findById` call.
@@ -61,8 +61,8 @@ export const getSingleUser = async (req, res) => {
     const foundUser = await User.findById(id);
 
     if (foundUser) {
-      console.log("Response------------------->");
-      console.log(foundUser);
+      // console.log("Response------------------->");
+      // console.log(foundUser);
       res.json(foundUser);
     }
   } catch (err) {
@@ -97,13 +97,13 @@ export const getAllUsers = (req, res) => {
 
 // Route for searching Users by name or publicKey
 export const searchUsers = async (req, res) => {
-  console.log(
-    "Inside Search user---------------------------------------------------"
-  );
+  // console.log(
+  //   "Inside Search user---------------------------------------------------"
+  // );
   try {
     const { username, publicKey } = req.params;
     // const { username, publicKey } = req.query;
-    console.log(req.params);
+    // console.log(req.params);
     // console.log(req.query);
     let results = [];
     // username = username;
@@ -271,7 +271,7 @@ export const acceptFriendRequest = async (req, res) => {
 
 // Deny a friend request from friendId to currentPublicKey
 export const denyFriendRequest = async (req, res) => {
-  console.log("Denyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
+  // console.log("Denyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyyy");
   try {
     const { userId, friendId } = req.body;
 
@@ -282,7 +282,7 @@ export const denyFriendRequest = async (req, res) => {
       UserRes.friendRequests = UserRes.friendRequests.filter((p) => {
         return p.toString() !== friendId.toString();
       });
-      console.log(UserRes);
+      // console.log(UserRes);
       await UserRes.save();
       res.json(UserRes);
     }
@@ -318,10 +318,10 @@ export const getFriendRequests = async (req, res) => {
 export const getFriendCount = async (req, res) => {
   try {
     const { userId } = req.params;
-    console.log("User Id:" + userId);
+    // console.log("User Id:" + userId);
     const userRes = await User.findById(userId);
 
-    console.log("Get friend api----->");
+    // console.log("Get friend api----->");
 
     if (userRes.friends.length > 0) {
       const friendCount = userRes.friends.length;

@@ -99,22 +99,22 @@ export const login = async (req, res) => {
     const email = req.body.email;
     const password = req.body.password;
 
-    console.log("Bodddyyy");
-    console.log(req.body);
-    console.log("Request receive-----------");
-    console.log("Request receive-----------");
-    console.log(email);
-    console.log("Request receive-----------");
+    // console.log("Bodddyyy");
+    // console.log(req.body);
+    // console.log("Request receive-----------");
+    // console.log("Request receive-----------");
+    // console.log(email);
+    // console.log("Request receive-----------");
 
     if (!email || !password) {
-      console.log("Request receiqe434ve-----------");
+      // console.log("Request receiqe434ve-----------");
 
       res.status(4001).json({
         status: "FAILED",
         message: "Email or Password Not Entered!",
       });
     }
-    console.log("outsides");
+    // console.log("outsides");
 
     const userLogin = await User.findOne({ email: email });
 
@@ -122,7 +122,7 @@ export const login = async (req, res) => {
       const isMatch = await bcrypt.compare(password, userLogin.password);
 
       const token = await userLogin.generateAuthToken();
-      console.log(token);
+      // console.log(token);
 
       res.cookie("jwttoken", token);
 
@@ -201,7 +201,7 @@ export const sendOTPVerificationEmail = async ({ _id, email }, res) => {
     // cookies.set("userEmail", email, { httpOnly: true });
     // res.statuscookie("userId", _id);
 
-    console.log("Redirectiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
+    // console.log("Redirectiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii");
 
     // res.status(301).redirect("http://localhost:5173/otpVerification");
   } catch (error) {
@@ -220,10 +220,10 @@ export const registeruser = async (req, res) => {
     dob: req.body.dob,
   };
   // new User(user).save();
-  console.log(user.username);
-  console.log(user.email);
-  console.log(user.password);
-  console.log(user.dob);
+  // console.log(user.username);
+  // console.log(user.email);
+  // console.log(user.password);
+  // console.log(user.dob);
   const cookies = new Cookies(req, res);
 
   // Set a cookie
@@ -234,12 +234,12 @@ export const registeruser = async (req, res) => {
 
 export const verifyOTP = async (req, res) => {
   try {
-    console.log("eidjwifuuuuuuuuuuuuuuuuuuuuuuuuuu");
+    // console.log("eidjwifuuuuuuuuuuuuuuuuuuuuuuuuuu");
     const email = req.body.email;
     const otp = req.body.otp;
     // const email = req.body.email;
 
-    console.log("Inside verify-----------------");
+    // console.log("Inside verify-----------------");
 
     if (!email || !otp) {
       throw Error("Empty otp details are not allowed!");
@@ -262,12 +262,12 @@ export const verifyOTP = async (req, res) => {
           throw new Error("Code has expired. Please request again.");
         } else {
           const validOTP = await bcrypt.compare(otp, hashedOTP);
-          console.log("inside compare");
+          // console.log("inside compare");
           if (!validOTP) {
             // otp is wrong
             throw new Error("Invalid code passed. Check your inbox.");
           } else {
-            console.log("Inside verifieeedd-----------------");
+            // console.log("Inside verifieeedd-----------------");
             //success
             await User.updateOne({ email: email }, { verified: true });
             await UserOTPVerification.deleteMany({ email });
@@ -291,7 +291,7 @@ export const resendOTPVerificationCode = async (req, res) => {
   try {
     let userId = req.cookies.userId;
     let email = req.body.email;
-    console.log("Email Received from d-none:", email);
+    // console.log("Email Received from d-none:", email);
     if (!userId || !email) {
       throw Error("Empty user details are not allowed");
     } else {

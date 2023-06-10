@@ -21,14 +21,14 @@ export default function Profile() {
   useEffect(() => {
     if(localStorage.getItem("user"))
     {
-    console.log("Selected__________profile>"+selectedPerson)
-    console.log()
+    // console.log("Selected__________profile>"+selectedPerson)
+    // console.log()
     // const id=JSON.parse(localStorage.getItem("user")).id;
     
     setloggedInUser(JSON.parse(localStorage.getItem("user")).id)
-    console.log("Loggedin use profile"+loggedInUser)
+    // console.log("Loggedin use profile"+loggedInUser)
     setSelectedPerson(JSON.parse(localStorage.getItem("user")).id)
-    console.log("selected use profile"+selectedPerson)
+    // console.log("selected use profile"+selectedPerson)
     }
 
     if(loggedInUser&& selectedPerson)
@@ -36,7 +36,7 @@ export default function Profile() {
       
       fetchData(selectedPerson); 
      fetchFriendsCount(selectedPerson);
-     console.log("Profile person:"+person.token)
+    //  console.log("Profile person:"+person.token)
      
     }
 

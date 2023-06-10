@@ -2,7 +2,10 @@ import React, { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/config";
 import logo from "../../public/Images/logo.png";
+import { DigiTalkContext } from "../context/DigitalkContext";
+
 const login = () => {
+  const {updateuser,connectedAccounts} =useContext(DigiTalkContext)
   const [credentials, setCredentials] = useState({
     email: undefined,
     password: undefined,
@@ -17,12 +20,12 @@ const login = () => {
   const handleClick = async (e) => {
     e.preventDefault();
 
-    console.log("details are----------")
-    console.log(credentials.email)
-    console.log(credentials.password)
-    console.log("details are----------")
-    console.log(credentials)
-    console.log(JSON.stringify(credentials))
+    // console.log("details are----------")
+    // console.log(credentials.email)
+    // console.log(credentials.password)
+    // console.log("details are----------")
+    // console.log(credentials)
+    // console.log(JSON.stringify(credentials))
 
 
     try {
@@ -46,7 +49,14 @@ const login = () => {
       {
 
         localStorage.setItem("user",JSON.stringify(result.user))
-
+        
+        if(connectedAccounts)
+        {
+          // const Id=JSON.parse(localStorage.getItem("user")).id;
+          console.log("Response we get:",result.user.id)
+          console.log("Inside Update after login------------- ")
+          updateuser(connectedAccounts,result.user.id)
+        }
         navigate("/");
       }
     } catch (err) {

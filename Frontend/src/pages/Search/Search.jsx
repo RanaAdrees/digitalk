@@ -22,24 +22,24 @@ function Search({ onPersonClick }) {
   
   const handleSearch = async (query) => {
     setid(JSON.parse(localStorage.getItem("user")).id)
-    console.log("Id is iiiiiiiiiiiiiiiii:"+id);
-    console.log("keyyyyyyyyyyyyyyyyyyyyy:",query)
-    console.log("typeeeee",typeof(query))
+    // console.log("Id is iiiiiiiiiiiiiiiii:"+id);
+    // console.log("keyyyyyyyyyyyyyyyyyyyyy:",query)
+    // console.log("typeeeee",typeof(query))
     if (!query) {
       setResults([]);
       return;
     }
     try {
-      console.log("itself---------")
+      // console.log("itself---------")
       const result = await axios.get(`${BASE_URL}/users/${id}`);
       const itself = result.data;
-      console.log("itself---------")
-      console.log(itself)
+      // console.log("itself---------")
+      // console.log(itself)
       // console.log(`${BASE_URL}/users/search/${query}/publickey/${query}`)
 
       const res = await axios.get(`${BASE_URL}/users/search/${query}/publickey/${query}`);
-      console.log(res)
-      console.log(res.data)
+      // console.log(res)
+      // console.log(res.data)
       res.data = res.data.filter(item => {
         return item._id !== id
       })
@@ -53,7 +53,7 @@ function Search({ onPersonClick }) {
           hasFriendRequest,
         };
       });
-      console.log(updatedResults)
+      // console.log(updatedResults)
       setResults(updatedResults);
     } catch (err) {
       console.error(err);

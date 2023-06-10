@@ -9,7 +9,7 @@ const otpVerification = () => {
     email:undefined
   })
   const navigate = useNavigate();
-  console.log("Inside verificationwwwwwwwwwwww")
+  // console.log("Inside verificationwwwwwwwwwwww")
 
   // const fetchUser=async()=>{
   //   const email=localStorage.getItem("email");
@@ -33,7 +33,7 @@ const otpVerification = () => {
   // }, [])
 
   const handleChange = (e) => {
-    console.log("On change---------")
+    // console.log("On change---------")
     const email=localStorage.getItem("email")
     
     console.log(e.target.value)
@@ -45,7 +45,7 @@ const otpVerification = () => {
 
 
     try {
-      console.log("About to fetch----------eeee")
+      // console.log("About to fetch----------eeee")
       const res = await fetch(`${BASE_URL}/auth/verifyOTP`, {
         method: "post",
         headers: {

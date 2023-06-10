@@ -77,8 +77,8 @@ const Compose = () => {
 
     const result = await ipfs.add(formData["buffer"]);
 
-    console.log("result is:",result);
-    console.log("result is:",result.path);
+    // console.log("result is:",result);
+    // console.log("result is:",result.path);
 
     // createNewPost();
     createNewPost(result.path,fileName);
@@ -100,19 +100,19 @@ const Compose = () => {
     reader.onloadend = () => {
 
       setformData((prevState) => ({ ...prevState, [nameAtt]: reader.result }));
-      console.log("Reader result:", reader.result)
-      console.log("formData:", formData)
+      // console.log("Reader result:", reader.result)
+      // console.log("formData:", formData)
       // save in state
     }
   }
 
   const handleChange = (e) => {
     const nameAtt = e.target.name;
-    console.log(e.target.name)
-    console.log(e.target.value)
+    // console.log(e.target.name)
+    // console.log(e.target.value)
     setformData((prevState) => ({ ...prevState, [nameAtt]: e.target.value }));
 
-    console.log(formData)
+    // console.log(formData)
 
 
   }
