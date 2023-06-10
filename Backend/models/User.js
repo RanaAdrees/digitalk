@@ -16,7 +16,7 @@ const UserSchema = new Schema({
     unique: true,
     trim: true,
   },
-  // friends: [{ type: mongoose.Types.ObjectId }],
+  friends: [{ type: mongoose.Types.ObjectId }],
   // friends: [{ type: mongoose.Types.ObjectId,type:mongoose.Types.String }],
   friendRequests: [{ type: mongoose.Types.ObjectId }],
   // friendRequests: [{ type: mongoose.Types.ObjectId,type:mongoose.Types.String }],
