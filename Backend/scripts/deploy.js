@@ -25,6 +25,6 @@ const runMain = async () => {
 
 runMain();
 
-//  Latest DigiTalk is deployed to 0x98b60C545Eb66126F1751189170ca42602096a62
+// Previous DigiTalk is deployed to 0x98b60C545Eb66126F1751189170ca42602096a62
 
-// previous with missing DigiTalk is deployed to 0x804A686Ce0083c17D8e23e60B54Bfd054Ce378B1
+//  Latest DigiTalk is deployed to 0xfdA72F449330dFC888D0F4ff6d4B4203624A5b16

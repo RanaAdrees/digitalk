@@ -56,6 +56,7 @@ const login = () => {
           console.log("Response we get:",result.user.id)
           console.log("Inside Update after login------------- ")
           updateuser(connectedAccounts,result.user.id)
+          localStorage.setItem("key",connectedAccounts);
         }
         navigate("/");
       }

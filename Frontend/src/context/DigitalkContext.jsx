@@ -5,6 +5,7 @@ import Cookie from "js-cookie"
 import { BASE_URL } from '../utils/config';
 import { ethers } from "ethers";
 import { AccountSlice } from '../utils/AccountSlice';
+import axios from 'axios';
 
 export const DigiTalkContext=React.createContext();
 
@@ -54,7 +55,8 @@ export const DigiTalkProvider=({children})=>{
 
     const [formData, setformData] = useState({
         description: "",
-        buffer:""
+        buffer:"",
+        status:""
     });
 
     const [postsArr, setpostsArr] = useState([]);
@@ -244,13 +246,15 @@ export const DigiTalkProvider=({children})=>{
 
     // creating new post
 
-    const createNewPost=async(hash,file_name)=>{
+    const createNewPost=async(hash,file_name,_userId)=>{
 
         try{
             if(ethereum)
             {
 
-                const {description} = formData;
+                const {description,status} = formData;
+                console.log("Description:"+description)
+                console.log("status:"+status)
                 
                 const  digitalkContractWithSigner = await CreatAndConnectSigner();
     
@@ -258,7 +262,7 @@ export const DigiTalkProvider=({children})=>{
                 
                 //call createPost method of contract and get transaction hash
     
-                const transHash= await digitalkContractWithSigner.createPost(description,"public",hash,file_name);
+                const transHash= await digitalkContractWithSigner.createPost(description,status,hash,file_name,_userId);
         
                 // console.log(transHash);
         
@@ -321,6 +325,7 @@ export const DigiTalkProvider=({children})=>{
 
                    const structureArr=getPostsArr.map((post)=>({
                        id:post.id,
+                       userId:post.userId,
                        tipAmount:post.tipAmount,
                        description:post.description,
                        hash:post.hash,
@@ -331,8 +336,8 @@ export const DigiTalkProvider=({children})=>{
                    }))
         
                    setpostsArr(structureArr);
-        
-                //    console.log(structureArr);
+                console.log("Fetch all posts:")
+                   console.log(structureArr);
                    setisLoading(false)
                }
     
@@ -401,13 +406,14 @@ export const DigiTalkProvider=({children})=>{
                {
 
                    const structureArr=getPostsArr.map((post)=>({
-                       id:post.id,
-                       tipAmount:post.tipAmount,
-                       description:post.description,
-                       hash:post.hash,
-                       fileName:post.fileName,
-                       status:post.status,
-                       auther:post.auther
+                    id:post.id,
+                    userId:post.userId,
+                    tipAmount:post.tipAmount,
+                    description:post.description,
+                    hash:post.hash,
+                    fileName:post.fileName,
+                    status:post.status,
+                    auther:post.auther
         
                    }))
         
@@ -457,12 +463,13 @@ export const DigiTalkProvider=({children})=>{
 
                    const structureArr=getPostsArr.map((post)=>({
                     id:post.id,
-                    tipAmount:post.tipAmount,
-                    description:post.description,
-                    hash:post.hash,
-                    fileName:post.fileName,
-                    status:post.status,
-                    auther:post.auther
+                       userId:post.userId,
+                       tipAmount:post.tipAmount,
+                       description:post.description,
+                       hash:post.hash,
+                       fileName:post.fileName,
+                       status:post.status,
+                       auther:post.auther
         
                    }))
 
@@ -472,10 +479,10 @@ export const DigiTalkProvider=({children})=>{
                 const filteredArr=structureArr.filter((post)=>{
                     return post.hash!="" && post.description!="";
                 })
-        
+                console.log("Fetch all posts:")
                    setselfpostsArr(filteredArr);
         
-                //    console.log(structureArr);
+                   console.log(filteredArr);
                    setisLoading(false)
                }
     
@@ -543,6 +550,8 @@ export const DigiTalkProvider=({children})=>{
         console.error(error);
       }
     }
+
+
     const fetchFriendsCount=async(id)=>{
         // console.log("Inside Fetch friends--------------------->")
         // id=JSON.stringify(id);
@@ -563,6 +572,9 @@ export const DigiTalkProvider=({children})=>{
        console.log(err)
       }
     }
+
+
+
 
     useEffect(() => {
         checkIfEthereumExists();

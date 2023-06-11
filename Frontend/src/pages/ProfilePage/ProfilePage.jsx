@@ -9,8 +9,8 @@ import Search from "../Search/Search";
 
 import { BASE_URL } from "../../utils/config";
 import "./ProfilePage.css";
-import profilePhoto from "/public/Images/profile-img3.png";
-import postPhoto1 from "/public/Images/post-img2.png";
+// import profilePhoto from "/public/Images/profile-img3.png";
+// import postPhoto1 from "/public/Images/post-img2.png";
 import { DigiTalkContext } from "../../context/DigitalkContext";
 import ConnectPage from "../ConnectPage";
 

@@ -9,8 +9,9 @@ import profilePhoto from "/public/Images/profile-img3.png";
 import { DigiTalkContext } from "../../context/DigitalkContext";
 
 export default function Profile() {
-  const {person,friendList,fetchFriends,fetchData,fetchFriendsCount,followersCount} =useContext(DigiTalkContext)
+  const {person,friendList,fetchFriends,selfpostsArr,fetchData,fetchFriendsCount,followersCount} =useContext(DigiTalkContext)
   const [copied, setCopied] = useState(false);
+  const [totalEarned, settotalEarned] = useState(0)
   // const [person, setPerson] = useState({});
   const [loggedInUser, setloggedInUser] = useState("")
   const [selectedPerson, setSelectedPerson] = useState(loggedInUser);
@@ -41,6 +42,29 @@ export default function Profile() {
     }
 
   }, [selectedPerson])
+
+  const getTotalEarned=()=>{
+    let sum=0;
+
+    selfpostsArr.forEach(post => {
+      console.log("Sum:"+sum)
+      console.log("Sum:"+typeof sum)
+      console.log("parse Ether:"+parseFloat(ethers.utils.formatEther(post.tipAmount.toString())))
+      
+      sum=sum+parseFloat(ethers.utils.formatEther(post.tipAmount.toString()))
+      
+    });
+    settotalEarned(sum)
+  }
+
+
+  useEffect(() => {
+
+    getTotalEarned();
+
+    
+  }, [selfpostsArr])
+  
   
 
   // useEffect(() => {
@@ -136,14 +160,14 @@ export default function Profile() {
         <div className='profile-stats'>
           <ul className="list-group list-group-flush">
             <li className="list-group-item">
-              <strong>Posts:</strong> {person.postCount ? person.Count : "0"}
+              <strong>Posts:</strong> {selfpostsArr ? selfpostsArr.length : "0"}
             </li>
             <li className="list-group-item">
-              <strong>Earned:</strong> {person.money ? ethers.utils.formatEther(person.tipAmount.toString()) : "0"}
+              <strong>Earned in ETH:</strong> {totalEarned!=0 ? totalEarned : "0"}
             </li>
             <li className="list-group-item">
               <strong>Followers:</strong> {followersCount ? followersCount : "0"}
-            </li>
+            </li> 
           </ul>
         </div>
       </div>

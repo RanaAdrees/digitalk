@@ -6,6 +6,7 @@ import { BASE_URL } from '../../utils/config';
 const Notification = () => {
   const [friendRequests, setFriendRequests] = useState([]);
   const [id, setId] = useState("")
+  const [publicKey, setpublicKey] = useState("")
   useEffect(() => {
     
     // Fetch friend requests for the current user from the backend API
@@ -25,6 +26,7 @@ const Notification = () => {
 
   useEffect(() => {
     setId(JSON.parse(localStorage.getItem("user")).id)
+    setpublicKey(localStorage.getItem("key"))
   }, [])
   
 
@@ -32,7 +34,9 @@ const Notification = () => {
     try {
       const response = await axios.post(`${BASE_URL}/users/notification/acceptFriendRequest/`, {
         id,
-        friendId: friend._id
+        // publicKey,
+        friendId: friend._id,
+        // friendKey:friend.publicKey
       });
 
       if (response.data.status === 200) {

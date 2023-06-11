@@ -8,21 +8,21 @@ const Posts = ({Arr,count}) => {
 
   // const [count, setcount] = useState(0)
   // const [Arr, setArr] = useState([])
-  useEffect(() => {
-    console.log("Array receivers:")
-    // console.log(Arr)
-    // if(status==="self")
-    // {
-    //   setArr(selfpostsArr)
-    //   setcount(selfpostsArr.length);
-    // }
-    // else
-    // {
-    //   setArr(postsArr)
-    //   setcount(postsArr.length);
-    // }
+  // useEffect(() => {
+  //   console.log("Array receivers:")
+  //   // console.log(Arr)
+  //   // if(status==="self")
+  //   // {
+  //   //   setArr(selfpostsArr)
+  //   //   setcount(selfpostsArr.length);
+  //   // }
+  //   // else
+  //   // {
+  //   //   setArr(postsArr)
+  //   //   setcount(postsArr.length);
+  //   // }
   
-  }, [])
+  // }, [])
   
 
   

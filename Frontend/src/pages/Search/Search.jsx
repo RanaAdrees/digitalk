@@ -10,6 +10,7 @@ import { BASE_URL } from '../../utils/config';
 function Search({ onPersonClick }) {
   // const id = "6471e1cb8661253a93967d0d";
   const [id, setid] = useState("")
+  const [publicKey, setpublicKey] = useState("")
   const [query, setQuery] = useState('');
   const [results, setResults] = useState([]);
   // const {person,fetchData}=useContext(DigiTalkContext)
@@ -22,6 +23,7 @@ function Search({ onPersonClick }) {
   
   const handleSearch = async (query) => {
     setid(JSON.parse(localStorage.getItem("user")).id)
+    setpublicKey(localStorage.getItem("key"));
     // console.log("Id is iiiiiiiiiiiiiiiii:"+id);
     // console.log("keyyyyyyyyyyyyyyyyyyyyy:",query)
     // console.log("typeeeee",typeof(query))
@@ -78,6 +80,7 @@ function Search({ onPersonClick }) {
         const newresult = await axios.post(`${BASE_URL}/users/notification/sendFriendRequest`,
           {
             _id: id,
+            // publicKey:publicKey,
             UserId:personId,
           })
         if (newresult.data) {

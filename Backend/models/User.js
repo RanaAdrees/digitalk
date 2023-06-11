@@ -17,9 +17,19 @@ const UserSchema = new Schema({
     trim: true,
   },
   friends: [{ type: mongoose.Types.ObjectId }],
-  // friends: [{ type: mongoose.Types.ObjectId,type:mongoose.Types.String }],
+  // friends: [
+  //   {
+  //     _id: { type: mongoose.Types.ObjectId },
+  //     key: { type: String },
+  //   },
+  // ],
   friendRequests: [{ type: mongoose.Types.ObjectId }],
-  // friendRequests: [{ type: mongoose.Types.ObjectId,type:mongoose.Types.String }],
+  // friendRequests: [
+  //   {
+  //     _id: { type: mongoose.Types.ObjectId },
+  //     key: { type: String },
+  //   },
+  // ],
 });
 
 // generating Token

@@ -15,6 +15,8 @@ const Compose = () => {
 
   })
 
+  const [activeUser, setactiveUser] = useState("")
+
   // useEffect(async() => {
   //   try {
   //     const res = await fetch(`${BASE_URL}/auth/config`, {
@@ -38,6 +40,11 @@ const Compose = () => {
   //   }
   
   // }, [])
+
+  useEffect(() => {
+    setactiveUser(JSON.parse(localStorage.getItem("user")).id)
+  }, [])
+  
   
 
   const [fileName, setfileName] = useState("")
@@ -81,7 +88,7 @@ const Compose = () => {
     // console.log("result is:",result.path);
 
     // createNewPost();
-    createNewPost(result.path,fileName);
+    createNewPost(result.path,fileName,activeUser);
 
 
   }
@@ -108,8 +115,8 @@ const Compose = () => {
 
   const handleChange = (e) => {
     const nameAtt = e.target.name;
-    // console.log(e.target.name)
-    // console.log(e.target.value)
+    console.log(e.target.name)
+    console.log(e.target.value)
     setformData((prevState) => ({ ...prevState, [nameAtt]: e.target.value }));
 
     // console.log(formData)
@@ -142,7 +149,19 @@ const Compose = () => {
             placeholder="What is in your mind"
             onChange={(e) => { handleChange(e) }}
             required />
-        </div>
+           <fieldset>
+
+          <legend style={{fontSize:"20px",marginTop:"5px"}}>Seclect post visibility</legend>
+          <input type="radio" id="op1" name="status" value="public" onChange={handleChange} style={{margin:"10px"}} required/>
+          <label for="op1">Public</label>
+          
+          <input type="radio" id="op2" name="status" value="private" onChange={handleChange} style={{margin:"10px"}} required/>
+          <label for="op2">Private</label>
+          </fieldset>
+          </div>
+
+
+         
         <button type="submit" className="btn btn-primary btn-sm mt-3">Upload!</button>
         {isLoading ?
           <Loader />

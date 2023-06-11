@@ -14,6 +14,7 @@ contract DigiTalk {
 
     event Post(
         uint id,
+        string userId,
         uint tipAmount,
         string description,
         string hash,
@@ -37,6 +38,7 @@ contract DigiTalk {
 
     struct PostStruct {
         uint id;
+        string userId;
         uint tipAmount;
         string description;
         string hash;
@@ -57,7 +59,8 @@ contract DigiTalk {
         string memory _description,
         string memory _status,
         string memory hash,
-        string memory file_name
+        string memory file_name,
+        string memory _userId
     ) public {
         postCount++;
 
@@ -66,6 +69,7 @@ contract DigiTalk {
         posts.push(
             PostStruct(
                 postCount,
+                _userId,
                 0,
                 _description,
                 hash,
@@ -79,6 +83,7 @@ contract DigiTalk {
 
         emit Post(
             postCount,
+            _userId,
             0,
             _description,
             hash,

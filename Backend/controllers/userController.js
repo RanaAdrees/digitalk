@@ -205,6 +205,11 @@ export const sendFriendRequest = async (req, res) => {
       !userRes.friendRequests.includes(_id) &&
       !userRes.friends.includes(_id)
     ) {
+      // const obj={
+      //   _id,
+      //   publicKey
+      // }
+      // id as well as publickey save
       userRes.friendRequests.push(_id);
       await userRes.save();
       res.json(userRes);
@@ -246,18 +251,26 @@ export const acceptFriendRequest = async (req, res) => {
     const { id, friendId } = req.body;
 
     const currentUser = await User.findById(id);
+
     const friendUser = await User.findById(friendId);
 
     if (currentUser && friendUser) {
       currentUser.friendRequests = currentUser.friendRequests.filter(
         (id) => id.toString() !== friendId.toString()
       );
+
+      // const friendObj={
+      //   friendId,
+      //   friendKey
+      // }
+
       currentUser.friends.push(friendId);
       await currentUser.save();
 
       friendUser.friendRequests = friendUser.friendRequests.filter(
         (id) => id.toString() !== id.toString()
       );
+
       friendUser.friends.push(id);
       await friendUser.save();
 
