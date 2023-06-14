@@ -50,7 +50,7 @@ const Home = () => {
     }
     else
     {
-      Cookie.set("user",JSON.parse(localStorage.getItem("user")))
+      // Cookie.set("user",JSON.parse(localStorage.getItem("user")))
      
     }
   }, [])

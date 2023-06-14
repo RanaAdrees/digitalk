@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 import authRoute from "./routes/auth.js";
 import userRoute from "./routes/users.js";
+// import abc from './routes/posts.js'
 import cookieParser from "cookie-parser";
 import express from "express";
 import cors from "cors";
@@ -38,6 +39,7 @@ app.use(cors());
 
 app.use("/api/v1/auth", authRoute);
 app.use("/api/v1/users", userRoute);
+app.use("/api/v1/posts", postsRoute);
 // for cookies
 
 app.use(cookieParser());

@@ -244,6 +244,13 @@ export const DigiTalkProvider=({children})=>{
         return digitalkContractWithSigner;
     }
 
+    const createUserDB=async(hash,)=>{
+
+    }
+    const updateLikes=async()=>{
+        
+    }
+
     // creating new post
 
     const createNewPost=async(hash,file_name,_userId)=>{
@@ -613,6 +620,7 @@ export const DigiTalkProvider=({children})=>{
         fetchFriends,
         person,
         friendList,
+        // createUserDB
         fetchFriendsCount,
         followersCount}}>
             {children}

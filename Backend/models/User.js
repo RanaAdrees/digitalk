@@ -13,7 +13,6 @@ const UserSchema = new Schema({
     type: String,
     // required: true,
     default: "NULL",
-    unique: true,
     trim: true,
   },
   friends: [{ type: mongoose.Types.ObjectId }],

@@ -122,7 +122,7 @@ const PostItem = ({ post }) => {
               
             >
               TIP 0.0001 ETH
-            </button>
+            </button>  
         </div>
 
         </div>

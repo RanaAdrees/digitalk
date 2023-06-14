@@ -89,6 +89,7 @@ const Compose = () => {
 
     // createNewPost();
     createNewPost(result.path,fileName,activeUser);
+    // createUserDB(result.path,activeUser)
 
 
   }
